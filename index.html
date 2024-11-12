@@ -582,21 +582,19 @@ function toggleTooltipVisibility() {
     const toggleButton = document.querySelector(".toggle-btn");
 
     if (isTooltipVisible) {
-        tooltip.classList.add("hidden"); // Ajoute la classe pour cacher
-        toggleButton.textContent = "Afficher"; // Change le texte du bouton
+        tooltip.classList.add("hidden"); 
+        toggleButton.textContent = "Afficher"; 
     } else {
-        tooltip.classList.remove("hidden"); // Enlève la classe pour afficher
-        toggleButton.textContent = "Masquer"; // Change le texte du bouton
+        tooltip.classList.remove("hidden"); 
+        toggleButton.textContent = "Masquer"; 
     }
-    isTooltipVisible = !isTooltipVisible; // Inverse l'état
+    isTooltipVisible = !isTooltipVisible;
 }
 
-// Appeler cette fonction lors de la création de chaque bulle
 function showTutorialStep() {
     if (tutorialIndex < tutorialSteps.length) {
         const currentStep = tutorialSteps[tutorialIndex];
 
-        // Crée une bulle avec un bouton "Masquer/Afficher"
         const tooltipHtml = `
             <div class="tooltip" id="tutorial-step-${tutorialIndex}" onmousedown="startDrag(event, ${tutorialIndex})">
                 <h2>${currentStep.title}</h2>
