@@ -43,6 +43,10 @@
 #input-container input:focus {
     border: 2px solid #4CAF50;
 }
+        
+.hidden {
+    display: none;
+}
 
 .tooltip {
     position: absolute;
@@ -59,10 +63,21 @@
     flex-direction: column;
     align-items: flex-start;
     cursor: move;
-    resize: both; 
     overflow: auto;
     min-width: 200px;
-    min-height: 150px; 
+    min-height: 150px;
+}
+
+
+.toggle-btn {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    align-self: flex-end;
 }
 
 .tooltip:after {
@@ -560,6 +575,42 @@ function stopResize() {
 
 showTutorialStep();
 
+let isTooltipVisible = true;
+
+function toggleTooltipVisibility() {
+    const tooltip = document.querySelector(".tooltip");
+    const toggleButton = document.querySelector(".toggle-btn");
+
+    if (isTooltipVisible) {
+        tooltip.classList.add("hidden"); // Ajoute la classe pour cacher
+        toggleButton.textContent = "Afficher"; // Change le texte du bouton
+    } else {
+        tooltip.classList.remove("hidden"); // Enlève la classe pour afficher
+        toggleButton.textContent = "Masquer"; // Change le texte du bouton
+    }
+    isTooltipVisible = !isTooltipVisible; // Inverse l'état
+}
+
+// Appeler cette fonction lors de la création de chaque bulle
+function showTutorialStep() {
+    if (tutorialIndex < tutorialSteps.length) {
+        const currentStep = tutorialSteps[tutorialIndex];
+
+        // Crée une bulle avec un bouton "Masquer/Afficher"
+        const tooltipHtml = `
+            <div class="tooltip" id="tutorial-step-${tutorialIndex}" onmousedown="startDrag(event, ${tutorialIndex})">
+                <h2>${currentStep.title}</h2>
+                <p>${currentStep.text}</p>
+                ${currentStep.image ? `<img src="${currentStep.image}" alt="Image explicative" class="tooltip-image">` : ''}
+                ${currentStep.code ? `<pre><code>${currentStep.code}</code></pre>` : ''}
+                <button class="close-btn" onclick="closeTutorialStep(${tutorialIndex})">X</button>
+                <button class="toggle-btn" onclick="toggleTooltipVisibility()">Masquer</button> <!-- Bouton pour masquer/afficher -->
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', tooltipHtml);
+    }
+}
 
 
     </script>
