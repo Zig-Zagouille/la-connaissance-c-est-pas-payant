@@ -43,10 +43,6 @@
 #input-container input:focus {
     border: 2px solid #4CAF50;
 }
-        
-.hidden {
-    display: none;
-}
 
 .tooltip {
     position: absolute;
@@ -63,21 +59,10 @@
     flex-direction: column;
     align-items: flex-start;
     cursor: move;
+    resize: both; 
     overflow: auto;
     min-width: 200px;
-    min-height: 150px;
-}
-
-
-.toggle-btn {
-    background-color: #ff6600;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-top: 10px;
-    align-self: flex-end;
+    min-height: 150px; 
 }
 
 .tooltip:after {
@@ -135,6 +120,47 @@ pre {
     cursor: pointer;
 }
 
+@media screen and (max-width: 600px) {
+
+    #terminal {
+        height: 70vh; 
+    }
+
+
+    .tooltip h2 {
+        font-size: 18px;
+    }
+    .tooltip p {
+        font-size: 14px;
+    }
+    pre {
+        font-size: 14px; 
+    }
+
+    .tooltip-image {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+
+@media screen and (max-width: 400px) {
+    .tooltip {
+        max-width: 95%; 
+    }
+
+    .tooltip h2 {
+        font-size: 16px;
+    }
+    .tooltip p {
+        font-size: 12px;
+    }
+    pre {
+        font-size: 12px;
+    }
+}
+        
+        
         
         
     </style>
@@ -534,45 +560,9 @@ function stopResize() {
 
 showTutorialStep();
 
-let isTooltipVisible = true;
-
-function toggleTooltipVisibility() {
-    const tooltip = document.querySelector(".tooltip");
-    const toggleButton = document.querySelector(".toggle-btn");
-
-    if (isTooltipVisible) {
-        tooltip.classList.add("hidden"); 
-        toggleButton.textContent = "Afficher"; 
-    } else {
-        tooltip.classList.remove("hidden"); 
-        toggleButton.textContent = "Masquer"; 
-    }
-    isTooltipVisible = !isTooltipVisible;
-}
-
-function showTutorialStep() {
-    if (tutorialIndex < tutorialSteps.length) {
-        const currentStep = tutorialSteps[tutorialIndex];
-
-        const tooltipHtml = `
-            <div class="tooltip" id="tutorial-step-${tutorialIndex}" onmousedown="startDrag(event, ${tutorialIndex})">
-                <h2>${currentStep.title}</h2>
-                <p>${currentStep.text}</p>
-                ${currentStep.image ? `<img src="${currentStep.image}" alt="Image explicative" class="tooltip-image">` : ''}
-                ${currentStep.code ? `<pre><code>${currentStep.code}</code></pre>` : ''}
-                <button class="close-btn" onclick="closeTutorialStep(${tutorialIndex})">X</button>
-                <button class="toggle-btn" onclick="toggleTooltipVisibility()">Masquer</button> <!-- Bouton pour masquer/afficher -->
-            </div>
-        `;
-
-        document.body.insertAdjacentHTML('beforeend', tooltipHtml);
-    }
-}
 
 
     </script>
   
 </body>
 </html>
-
-
