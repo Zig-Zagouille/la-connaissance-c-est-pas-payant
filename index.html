@@ -5,7 +5,83 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aircrack-ng Projet Partage</title>
+    <div id="cotpan" class="cot_pan">
+    <button id="pannbtn" class="topanbtn" onclick="toPann()">☰</button>
+    <div id="tutocont"></div>
+</div>
     <style>
+
+.cot_pan {
+    position: fixed;
+    left: -350px;
+    top: 0;
+    width: 350px;
+    height: 100%;
+    background-color: #333;
+    color: white;
+    overflow-y: auto;
+    transition: 0.3s;
+    padding-top: 20px;
+    z-index: 10000;
+}
+
+.topanbtn {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    background-color: #61952e;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10001;
+    border-radius: 5px;
+}
+
+.cot_pan .infobul {
+    position: static;
+    background-color: #4b4b4b;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.cot_pan h2 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.cot_pan p, .cot_pan code {
+    font-size: 12px;
+}
+
+.cot_pan img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         body {
     font-family: monospace, sans-serif;
     background-color: #1e1e1e;
@@ -44,7 +120,7 @@
     border: 2px solid #4CAF50;
 }
 
-.tooltip {
+.infobul {
     position: absolute;
     background-color: #61952e;
     color: white;
@@ -65,7 +141,7 @@
     min-height: 70px; 
 }
 
-.tooltip:after {
+.infobul:after {
     content: '';
     position: absolute;
     right: 5px;
@@ -76,25 +152,25 @@
     cursor: se-resize;
 }
 
-.tooltip h2 {
+.infobul h2 {
     margin: 0;
     font-size: 10px;
     font-weight: bold;
     word-wrap: break-word;
 }
 
-.tooltip p {
+.infobul p {
     margin: 10px 0;
     font-size: 8px;
     word-wrap: break-word;
 }
 
-pre {
+codee {
     background-color: #333;
     color: #f8f8f2;
     padding: 10px;
     border-radius: 5px;
-    white-space: pre-wrap;
+    white-space: codee-wrap;
     word-wrap: break-word;
     font-size: 8px;
     width: 100%;
@@ -102,7 +178,7 @@ pre {
 }
 
 
-.tooltip-image {
+.infobul-image {
     max-width: 100%;
     height: auto;
     margin: 10px 0;
@@ -127,17 +203,17 @@ pre {
     }
 
 
-    .tooltip h2 {
+    .infobul h2 {
         font-size: 18px;
     }
-    .tooltip p {
+    .infobul p {
         font-size: 14px;
     }
-    pre {
+    codee {
         font-size: 14px; 
     }
 
-    .tooltip-image {
+    .infobul-image {
         max-width: 100%;
         height: auto;
     }
@@ -145,17 +221,17 @@ pre {
 
 
 @media screen and (max-width: 400px) {
-    .tooltip {
+    .infobul {
         max-width: 95%; 
     }
 
-    .tooltip h2 {
+    .infobul h2 {
         font-size: 16px;
     }
-    .tooltip p {
+    .infobul p {
         font-size: 12px;
     }
-    pre {
+    codee {
         font-size: 12px;
     }
 }
@@ -168,115 +244,119 @@ pre {
 <body>
     <div id="terminal"></div>
     <div id="input-container">
-        <input type="text" id="command-input" placeholder="Entrez une commande..." autofocus />
+        <input type="text" id="command-input" placeholder="Entrer une commande..." autofocus />
     </div>
 
     <script>
-        const networks = [
-            { bssid: '00:14:22:01:23:45', channel: 6, signal: -45, essid: 'MonReseau', clients: [
-                { mac: '11:00:14:22:01:23', ip: '192.168.1.10' },
-                { mac: '22:00:14:22:01:24', ip: '192.168.1.11' }
+        const ResO = [
+            { bssid: 'E8:15:17:01:23:47', channel: 6, signal: -45, essid: 'Poubel-WIFI', clients: [
+                { mac: '11:12:16:26:31:23', ip: '192.168.1.16' },
+                { mac: '22:00:14:22:01:24', ip: '192.168.1.45' }
             ]},
-            { bssid: '00:14:22:01:23:46', channel: 11, signal: -50, essid: 'AutreReseau', clients: [
-                { mac: '33:00:14:22:01:25', ip: '192.168.1.20' }
-            ]}
+            { bssid: 'B3:14:32:07:23:44', channel: 11, signal: -50, essid: 'mange-ma-CO', clients: [
+                { mac: '38:00:19:23:01:25', ip: '192.168.1.41' }
+            ]},
+            { bssid: 'E2:17:45:32:00:17', channel: 11, signal: -62, essid: 'D-fonss-ET_88', clients: [
+                { mac: '02:44:61:62:13:32', ip: '192.168.1.11' },
+                { mac: '22:00:41:22:10:42', ip: '192.168.1.10' }
+            ]},
         ];
 
-        let isSudo = false;
-        let isMonitorMode = false;
-        let currentInterface = 'wlan0';
-        let monitorInterface = 'wlan0mon';
+        let supUt = false;
+        let MonMod = false;
+        let interactu = 'wlan0';
+        let Monint = 'wlan0mon';
 
         const terminal = document.getElementById("terminal");
-        const commandInput = document.getElementById("command-input");
+        const entre_input = document.getElementById("command-input");
 
-        function printToTerminal(message) {
+        function print_Term(message) {
             const p = document.createElement("p");
             p.textContent = message;
             terminal.appendChild(p);
             terminal.scrollTop = terminal.scrollHeight;
         }
 
-        function executeCommand(command) {
+        function executeCom(command) {
             const cmd = command.trim().toLowerCase();
             
             if (cmd === "sudo su") {
-                if (isSudo) {
-                    printToTerminal("Vous êtes déjà en mode superutilisateur.");
+                if (supUt) {
+                    print_Term("Vous êtes déjà en mode superutilisateur.");
                 } else {
-                    isSudo = true;
-                    printToTerminal("Mode superutilisateur activé.");
+                    supUt = true;
+                    print_Term("Mode superutilisateur activé.");
                 }
             } 
             else if (cmd === "exit") {
-                if (isSudo) {
-                    isSudo = false;
-                    printToTerminal("Mode superutilisateur désactivé.");
+                if (supUt) {
+                    supUt = false;
+                    print_Term("Mode superutilisateur désactivé.");
                 } else {
-                    printToTerminal("Fermeture du terminal.");
+                    print_Term("Fermeture du terminal.");
                 }
             }
             else if (cmd === "iwconfig") {
-                printToTerminal(isMonitorMode ? `${monitorInterface}  Mode: Monitor` : `${currentInterface}  Mode: Managed`);
+                print_Term(MonMod ? `${Monint}  Mode: Monitor` : `${interactu}  Mode: Managed`);
             }
             else if (cmd === "ifconfig") {
-                printToTerminal(`${currentInterface}  Link encap:Ethernet  HWaddr 00:11:22:33:44:55\n          inet6 addr: fe80::21b:43ff:fe23:4d6/64 Scope:Link\n          UP`);
-                if (isMonitorMode) {
-                    printToTerminal(`${monitorInterface}  Link encap:Ethernet  HWaddr 00:11:22:33:44:56\n          inet6 addr: fe80::21b:43ff:fe23:4d7/64 Scope:Link\n          UP`);
+                print_Term(`${interactu}  Link encap:Ethernet  HWaddr 00:11:22:33:44:55\n          inet6 addr: fe80::21b:43ff:fe23:4d6/64 Scope:Link\n          UP`);
+                if (MonMod) {
+                    print_Term(`${Monint}  Link encap:Ethernet  HWaddr 00:11:22:33:44:56\n          inet6 addr: fe80::21b:43ff:fe23:4d7/64 Scope:Link\n          UP`);
                 }
             }
             else if (cmd.startsWith("airmon-ng start wlan0")) {
-                if (isMonitorMode) {
-                    printToTerminal("wlan0mon est déjà en mode moniteur.");
+                if (MonMod) {
+                    print_Term("wlan0mon est déjà en mode moniteur.");
                 } else {
-                    isMonitorMode = true;
-                    printToTerminal("Mode moniteur activé sur wlan0.");
+                    MonMod = true;
+                    print_Term("Mode moniteur activé sur wlan0.");
                 }
             }
             else if (cmd.startsWith("airmon-ng stop wlan0mon")) {
-                if (!isMonitorMode) {
-                    printToTerminal("Le mode moniteur n'est pas activé.");
+                if (!MonMod) {
+                    print_Term("Le mode moniteur n'est pas activé.");
                 } else {
-                    isMonitorMode = false;
-                    printToTerminal("Mode moniteur désactivé sur wlan0mon.");
+                    MonMod = false;
+                    print_Term("Mode moniteur désactivé sur wlan0mon.");
                 }
             }
             else if (cmd === "airodump-ng wlan0mon") {
-                if (!isMonitorMode) {
-                    printToTerminal("Erreur: L'interface wlan0 doit être en mode moniteur pour exécuter cette commande.");
+                if (!MonMod) {
+                    print_Term("Erreur: L'interface wlan0 doit être en mode moniteur pour exécuter cette commande.");
                 } else {
-                    printToTerminal("Scan des réseaux WiFi... Voici les résultats :");
-                    networks.forEach(network => {
-                        printToTerminal(`${network.bssid}  Canal ${network.channel}  Signal: ${network.signal} dBm  ESSID: ${network.essid}`);
+                    print_Term("Scan des réseaux WiFi... Voici les résultats :");
+                    ResO.forEach(reso => {
+                        print_Term(`${reso.bssid}  Canal ${reso.channel}  Signal: ${reso.signal} dBm  ESSID: ${reso.essid}`);
                     });
                 }
             }
             else if (cmd.startsWith("airodump-ng --bssid")) {
     const match = cmd.match(/--bssid ([\w:]+)\s+(\S+)/);
     if (!match) {
-        printToTerminal("Erreur: Format de commande invalide. Assurez-vous d'utiliser --bssid <BSSID> <interface>.");
+        print_Term("Erreur: Format de commande invalide. Assurez-vous d'utiliser --bssid <BSSID> <interface>.");
     } else {
         const bssid = match[1]; 
-        const interfaceName = match[2]; 
+        const Nom_inter = match[2]; 
 
 
-        const isInterfaceValid = interfaceName === "wlan0mon" || interfaceName === "wlan1mon"; 
+        const True_Inter = Nom_inter === "wlan0mon" || Nom_inter === "wlan1mon"; 
 
-        if (!isInterfaceValid) {
-            printToTerminal(`Erreur: L'interface ${interfaceName} n'est pas en mode moniteur.`);
+        if (!True_Inter) {
+            print_Term(`Erreur: L'interface ${Nom_inter} n'est pas en mode moniteur.`);
             return;
         }
 
-        const network = networks.find(n => n.bssid === bssid);
-        if (network) {
-            printToTerminal(`Affichage des détails du réseau avec BSSID ${bssid}...`);
-            printToTerminal(`BSSID              Canal  Signal  ESSID\n${network.bssid}  ${network.channel}  ${network.signal} dBm  ${network.essid}`);
-            printToTerminal("Clients détectés :");
-            network.clients.forEach(client => {
-                printToTerminal(`MAC: ${client.mac}  IP: ${client.ip}`);
+        const reso = ResO.find(n => n.bssid === bssid);
+        if (reso) {
+            print_Term(`Affichage des détails du réseau avec BSSID ${bssid}...`);
+            print_Term(`BSSID              Canal  Signal  ESSID\n${reso.bssid}  ${reso.channel}  ${reso.signal} dBm  ${reso.essid}`);
+            print_Term("Clients détectés :");
+            reso.clients.forEach(client => {
+                print_Term(`MAC: ${client.mac}  IP: ${client.ip}`);
             });
         } else {
-            printToTerminal("BSSID non trouvé.");
+            print_Term("BSSID non trouvé.");
         }
     }
 }
@@ -284,91 +364,91 @@ pre {
             else if (cmd.startsWith("airodump-ng wlan0mon --channel")) {
                 const match = cmd.match(/--channel (\d+) --bssid ([\w:]+) -w (\S+)/);
                 if (match) {
-                    const [_, channel, bssid, outputFile] = match;
-                    const network = networks.find(n => n.bssid === bssid);
-                    if (network) {
-                        printToTerminal(`Exécution de airodump-ng sur le canal ${channel} pour le BSSID ${bssid}, avec enregistrement dans ${outputFile}.cap`);
-                        printToTerminal(`Scan du réseau ${network.essid} (BSSID: ${bssid}, Canal: ${network.channel}, Signal: ${network.signal} dBm)...`);
+                    const [_, channel, bssid, fichiercap] = match;
+                    const reso = ResO.find(n => n.bssid === bssid);
+                    if (reso) {
+                        print_Term(`Exécution de airodump-ng sur le canal ${channel} pour le BSSID ${bssid}, avec enregistrement dans ${fichiercap}.cap`);
+                        print_Term(`Scan du réseau ${reso.essid} (BSSID: ${bssid}, Canal: ${reso.channel}, Signal: ${reso.signal} dBm)...`);
                     } else {
-                        printToTerminal("BSSID non trouvé pour cette commande.");
+                        print_Term("BSSID non trouvé pour cette commande.");
                     }
                 } else {
-                    printToTerminal("Commande airodump-ng mal formée. Vérifiez la syntaxe.");
+                    print_Term("Commande airodump-ng mal formée. Vérifiez la syntaxe.");
                 }
             }
             else if (cmd.startsWith("aireplay-ng -0")) {
-                if (!isMonitorMode) {
-                    printToTerminal("Erreur: L'interface wlan0mon doit être en mode moniteur.");
+                if (!MonMod) {
+                    print_Term("Erreur: L'interface wlan0mon doit être en mode moniteur.");
                 } else {
                     const match = cmd.match(/-0 (\d+) -a ([\w:]+) -c ([\w:]+)/);
                     if (match) {
-                        const [_, count, bssid, clientMac] = match;
-                        printToTerminal(`Envoi de ${count} paquets de désauthentification vers ${bssid} (${clientMac})...`);
+                        const [_, paquet, bssid, addrmaccible] = match;
+                        print_Term(`Envoi de ${paquet} paquets de désauthentification vers ${bssid} (${addrmaccible})...`);
                     } else {
-                        printToTerminal("Commande aireplay-ng incorrecte.");
+                        print_Term("Commande aireplay-ng incorrecte.");
                     }
                 }
             }
             else if (cmd.startsWith("aircrack-ng")) {
     const parts = cmd.split(" ");
-    let dictionaryFile = null;
+    let fichdico = null;
     let bssid = null;
-    let captureFile = null;
+    let fichcap = null;
 
     parts.forEach((part, index) => {
         if (part === "-w" && parts[index + 1]) {
-            dictionaryFile = parts[index + 1];
+            fichdico = parts[index + 1];
         } else if (part === "-b" && parts[index + 1]) {
             bssid = parts[index + 1];
         } else if (part.endsWith(".cap")) {
-            captureFile = part;
+            fichcap = part;
         }
     });
 
-    if (!dictionaryFile) {
-        printToTerminal("Erreur: Fichier dictionnaire (-w) non spécifié.");
+    if (!fichdico) {
+        print_Term("Erreur: Fichier dictionnaire (-w) non spécifié.");
     } else if (!bssid) {
-        printToTerminal("Erreur: BSSID (-b) non spécifié.");
-    } else if (!captureFile) {
-        printToTerminal("Erreur: Fichier de capture (.cap) non spécifié.");
+        print_Term("Erreur: BSSID (-b) non spécifié.");
+    } else if (!fichcap) {
+        print_Term("Erreur: Fichier de capture (.cap) non spécifié.");
     } else {
-        printToTerminal(`Tentative de craquage du mot de passe WPA avec le fichier ${captureFile}...\n`);
+        print_Term(`Tentative de craquage du mot de passe WPA avec le fichier ${fichcap}...\n`);
         
         const fs = require('fs');
-        if (fs.existsSync(dictionaryFile) && fs.existsSync(captureFile)) {
-            const command = `aircrack-ng -w ${dictionaryFile} -b ${bssid} ${captureFile}`;
+        if (fs.existsSync(fichdico) && fs.existsSync(fichcap)) {
+            const command = `aircrack-ng -w ${fichdico} -b ${bssid} ${fichcap}`;
             const { exec } = require('child_process');
             exec(command, (error, stdout, stderr) => {
                 if (error) {
-                    printToTerminal(`Erreur d'exécution: ${error.message}`);
+                    print_Term(`Erreur d'exécution: ${error.message}`);
                     return;
                 }
                 if (stderr) {
-                    printToTerminal(`Erreur: ${stderr}`);
+                    print_Term(`Erreur: ${stderr}`);
                     return;
                 }
-                printToTerminal(`Résultat de aircrack-ng :\n${stdout}`);
+                print_Term(`Résultat de aircrack-ng :\n${stdout}`);
             });
         } else {
-            printToTerminal("Erreur: Un des fichiers spécifiés est manquant.");
+            print_Term("Erreur: Un des fichiers spécifiés est manquant.");
         }
     }
 }
  else {
-                printToTerminal(`Commande non reconnue: ${cmd}`);
+                print_Term(`Commande non reconnue: ${cmd}`);
             }
         }
 
-        commandInput.addEventListener("keydown", function(event) {
+        entre_input.addEventListener("keydown", function(event) {
             if (event.key === "Enter") {
-                const command = commandInput.value.trim();
-                printToTerminal("$ " + command);
-                executeCommand(command);
-                commandInput.value = ""; 
+                const command = entre_input.value.trim();
+                print_Term("$ " + command);
+                executeCom(command);
+                entre_input.value = ""; 
             }
         });
 
-        commandInput.focus();
+        entre_input.focus();
         
         
         
@@ -381,14 +461,14 @@ pre {
         
         
 
-        const tutorialSteps = [
+        const etapebulle = [
           {
-        title: "Informations Diverses",
-        text: "Cette page imparfaite a pour but de découvrir une introduction au Pentest (Test d'intrusion) de façon éthique, ludique et accessible par toustes quelque soit l'expérience en informatique. Nous introduisons ici une initiation simplifiée de l'outil Aircrack-ng (disponible sur Windows, Linux, et macOS) pour comprendre les grande étape comme : passer sa carte WIFI en mode moniteur, analyser le réseau, désauthentifier, capturer des paquets, ou encore déchiffrer une clé. C'est une démonstration générale qui se veut simplifier les concepts dans les grandes lignes, pour aller plus loin, il faut consulter la nombreuse documentation web.  <br><br> Ici nous travaillerons sur la syntaxe d'Aircrack-ng sous Linux avec une tentative de reproduction d'invite de commande très basique. <br><br> Il n'est pas necessaire de rappeler que ce projet est à but éducatif officiellement portant sur la sécurité de nos réseaux WIFI restant dans un cadre éthique.",
+        chap: "Informations Diverses",
+        text: "Cette page imparfaite a pour but de découvrir une introduction au Pentest (Test d'intrusion) de façon éthique, ludique et accessible par toustes quelque soit l'expérience en informatique. Nous introduisons ici une initiation simplifiée de l'outil Aircrack-ng (disponible sur Windows, Linux, et macOS) pour comcodeendre les grande étape comme : passer sa carte WIFI en mode moniteur, analyser le réseau, désauthentifier, capturer des paquets, ou encore déchiffrer une clé. C'est une démonstration générale qui se veut simplifier les concepts dans les grandes lignes, pour aller plus loin, il faut consulter la nombreuse documentation web.  <br><br> Ici nous travaillerons sur la syntaxe d'Aircrack-ng sous Linux avec une tentative de reproduction d'invite de commande très basique. <br><br> Il n'est pas necessaire de rappeler que ce projet est à but éducatif officiellement portant sur la sécurité de nos réseaux WIFI restant dans un cadre éthique.",
         image: null
     },
     {
-        title: "1. Privilège superutilisateur",
+        chap: "1. Privilège superutilisateur",
         text: [
             "Passer en mode superutilisateur avec cette commande afin d'avoir la pleine utilisation de la machine :",
             "sudo su",
@@ -402,14 +482,14 @@ pre {
         image: null
     },
     {
-        title: "2. Carte WIFI en mode moniteur",
+        chap: "2. Carte WIFI en mode moniteur",
         text: ["De base, la carte WIFI est en mode managed, c'est à dire qu'elle ne reçoit que les paquets qui doivent parvenir à l'adresse MAC de la machine.<br>Le mode monitor capte tous les paquets qui se trouvent à portée de la machine.<br><br>Alors il faut activer le mode moniteur sur la carte WIFI pour surveiller/écouter les réseaux :",
         "airmon-ng start wlan0","Pour remettre en managed, on remplacera start par stop :","airmon-ng stop wlan0", 
         "On peut refaire un ifconfig ou iwconfig."],
         image: null
     },
     {
-        title: "3. Scan de réseaux",
+        chap: "3. Scan de réseaux",
         text:[ "Scannez les réseaux WiFi à proximité pour choisir une cible (on utilisera désormais notre carte en moniteur) :",
       "airodump-ng wlan0mon",
         "On peut regarder les appareils connecté à un réseau cible :",
@@ -417,7 +497,7 @@ pre {
         image: null
     },
     {
-        title: "4. Déauthentification/Capture de paquet",
+        chap: "4. Déauthentification/Capture de paquet",
         text: ["Effectuez une attaque de déauthentification pour déconnecter un client spécifique :",
        "aireplay-ng -0 ^nb de désauth^ -a ^bssid cible^ -c ^machine connecté au bssid cible^ wlan0mon",
         "Pour capturer des paquets du reseau cible : ",
@@ -425,140 +505,53 @@ pre {
         image: null
     },
     {
-        title: "5. Crack du mot de passe",
+        chap: "5. Crack du mot de passe",
         text:  "aircrack-ng pour tentative de crack le mot de passe avec un fichier dico de mdp :",
         code: "aircrack-ng -w ^dico-mdp.txt^ -b ^bssid cible^ ^fichier-capture.cap^",
         image: null
     }
 ];
 
-let tutorialIndex = 0;
 
 
-function showTutorialStep() {
-    if (tutorialIndex < tutorialSteps.length) {
-        const currentStep = tutorialSteps[tutorialIndex];
+let tutorialInd = 0;
 
+function toPann() {
+    const cotpan = document.getElementById("cotpan");
+    if (cotpan.style.left === "0px") {
+        cotpan.style.left = "-350px"; 
+    } else {
+        cotpan.style.left = "0px"; 
+    }
+}
 
-        const tooltipHtml = `
-            <div class="tooltip" id="tutorial-step-${tutorialIndex}" onmousedown="startDrag(event, ${tutorialIndex})">
-                <h2>${currentStep.title}</h2>
-                
-                <!-- Affichage du texte avec gestion des lignes multiples -->
-                ${Array.isArray(currentStep.text)
-                    ? currentStep.text.map(item => {
-                        if (item.includes("iwconfig") || item.includes("ifconfig") ||  item.includes("airmon-ng start wlan0") ||  item.includes("airmon-ng stop wlan0") || item.includes("sudo airodump-ng wlan0mon --channel ^numéro canal^ --bssid ^bssid cible^") ||  item.includes("airodump-ng wlan0mon") || item.includes("aireplay-ng -0 ^nb de désauth^ -a ^bssid cible^ -c <machine connecté au bssid cible> wlan0mon") ||  item.includes("airodump-ng wlan0mon --channel  ^numéro canal^ --bssid ^bssid cible^ -w ^nom fichier capture^") || item.includes("aircrack-ng -w ^dico-mdp.txt^ -b ^bssid cible^ ^fichier-capture.cap^")) {
-                            return `<pre><code>${item}</code></pre>`;
+function affichbul() {
+    const tutocont = document.getElementById("tutocont");
+    tutocont.innerHTML = ""; 
+
+    etapebulle.forEach((etape, index) => {
+        const etapeHtml = `
+            <div class="infobul" id="tutorial-step-${index}">
+                <h2>${etape.chap}</h2>
+                ${Array.isArray(etape.text)
+                    ? etape.text.map(item => {
+                        if (item.includes("iwconfig") || item.includes("ifconfig") ||  item.includes("airmon-ng start wlan0") || item.includes("airmon-ng stop wlan0") || item.includes("sudo airodump-ng wlan0mon --channel ^numéro canal^ --bssid ^bssid cible^") ||  item.includes("airodump-ng wlan0mon") || item.includes("aireplay-ng -0 ^nb de désauth^ -a ^bssid cible^ -c <machine connecté au bssid cible> wlan0mon") ||  item.includes("airodump-ng wlan0mon --channel  ^numéro canal^ --bssid ^bssid cible^ -w ^nom fichier capture^") || item.includes("aircrack-ng -w ^dico-mdp.txt^ -b ^bssid cible^ ^fichier-capture.cap^")) {
+                            return `<codee><code>${item}</code></codee>`;
                         } else {
                             return `<p>${item}</p>`;
                         }
                     }).join('')
-                    : `<p>${currentStep.text}</p>`}
-
-                <!-- Affichage de l'image si présente -->
-                ${currentStep.image ? `<img src="${currentStep.image}" alt="Image explicative" class="tooltip-image">` : ''}
-                
-                <!-- Affichage du code sous forme de bloc -->
-                ${currentStep.code ? `<pre><code>${currentStep.code}</code></pre>` : ''}
-                
-                <button class="close-btn" onclick="closeTutorialStep(${tutorialIndex})">X</button>
+                    : `<p>${etape.text}</p>`}
+                ${etape.image ? `<img src="${etape.image}" alt="Image explicative" class="infobul-image">` : ''}
+                ${etape.code ? `<codee><code>${etape.code}</code></codee>` : ''}
             </div>
         `;
-
-
-        document.body.insertAdjacentHTML('beforeend', tooltipHtml);
-    }
+        tutocont.insertAdjacentHTML('beforeend', etapeHtml);
+    });
 }
 
+affichbul();
 
-function closeTutorialStep(stepIndex) {
-    const tooltipElement = document.getElementById(`tutorial-step-${stepIndex}`);
-    if (tooltipElement) {
-        tooltipElement.remove();
-        tutorialIndex++;
-        showTutorialStep();
-    }
-}
-
-
-let isDragging = false;
-let offsetX, offsetY;
-
-function startDrag(event, stepIndex) {
-    const tooltipElement = document.getElementById(`tutorial-step-${stepIndex}`);
-    if (tooltipElement) {
-        isDragging = true;
-        offsetX = event.clientX - tooltipElement.offsetLeft;
-        offsetY = event.clientY - tooltipElement.offsetTop;
-
-        document.addEventListener("mousemove", drag, false);
-        document.addEventListener("mouseup", stopDrag, false);
-    }
-}
-
-function drag(event) {
-    if (isDragging) {
-        const tooltipElement = document.querySelector(".tooltip:hover");
-        if (tooltipElement) { 
-            tooltipElement.style.left = `${event.clientX - offsetX}px`;
-            tooltipElement.style.top = `${event.clientY - offsetY}px`;
-        }
-    }
-}
-
-function stopDrag() {
-    isDragging = false;
-    document.removeEventListener("mousemove", drag, false);
-    document.removeEventListener("mouseup", stopDrag, false);
-}
-
-
-let isResizing = false;
-let lastDownX = 0;
-let lastDownY = 0;
-
-function startResize(event, index) {
-    event.preventDefault();
-    isResizing = true;
-    lastDownX = event.clientX || event.touches[0].clientX;
-    lastDownY = event.clientY || event.touches[0].clientY;
-
-    document.addEventListener("mousemove", doResize, false);
-    document.addEventListener("touchmove", doResize, false);
-    document.addEventListener("mouseup", stopResize, false);
-    document.addEventListener("touchend", stopResize, false);
-}
-
-
-function doResize(event) {
-    if (isResizing) {
-        const tooltipElement = document.querySelector(".tooltip:hover");
-        if (tooltipElement) { 
-            const dx = (event.clientX || event.touches[0].clientX) - lastDownX;
-            const dy = (event.clientY || event.touches[0].clientY) - lastDownY;
-
-            const newWidth = tooltipElement.offsetWidth + dx;
-            const newHeight = tooltipElement.offsetHeight + dy;
-
-            tooltipElement.style.width = `${newWidth}px`;
-            tooltipElement.style.height = `${newHeight}px`;
-
-            lastDownX = event.clientX || event.touches[0].clientX;
-            lastDownY = event.clientY || event.touches[0].clientY;
-        }
-    }
-}
-
-function stopResize() {
-    isResizing = false;
-    document.removeEventListener("mousemove", doResize, false);
-    document.removeEventListener("touchmove", doResize, false);
-    document.removeEventListener("mouseup", stopResize, false);
-    document.removeEventListener("touchend", stopResize, false);
-}
-
-
-showTutorialStep();
 
 
 
