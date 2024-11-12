@@ -10,6 +10,64 @@
     <div id="tutocont"></div>
 </div>
     <style>
+ .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.3s, opacity 0.3s;
+        }
+        .tutorial-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .tutorial-box {
+            position: relative;
+            max-width: 90%;
+            padding: 20px;
+            border-radius: 10px;
+            background: #333;
+            text-align: center;
+            z-index: 1001;
+        }
+        .tutorial-box h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .tutorial-box p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .tutorial-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #61952e;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -224,20 +282,66 @@ pre {
     </style>
 </head>
 <body>
+<div id="tutorial-overlay" class="tutorial-overlay">
+    <div class="tutorial-box">
+        <h2>Bienvenue dans ce projet de partage pour tout niveau simplifié interractif sur Aircrack-ng !</h2>
+        <p id="tutorial-text">À gauche un tuto simple étape par étape.</p>
+        <button id="tutorial-next" class="tutorial-button" onclick="nextTutorialStep()">Suivant</button>
+    </div>
+</div>
+
     <div id="terminal"></div>
     <div id="input-container">
-        <input type="text" id="command-input" placeholder="Entrez une commande..." autofocus />
+        <input type="text" id="command-input" placeholder="Commande..." autofocus />
     </div>
 
+
     <script>
+
+ let tutorialStep = 0;
+
+    function startTutorial() {
+        document.getElementById("tutorial-overlay").classList.add("active");
+        document.getElementById("cotpan").classList.add("blurred");
+        document.getElementById("terminal").classList.add("blurred");
+        document.getElementById("input-container").classList.add("blurred");
+    }
+
+    function nextTutorialStep() {
+        tutorialStep++;
+        const tutorialText = document.getElementById("tutorial-text");
+        
+        if (tutorialStep === 1) {
+            tutorialText.innerHTML = "En bas, un invite de commande simplifié. À entrer les commandes.";
+            document.getElementById("cotpan").classList.remove("blurred");
+            document.getElementById("terminal").classList.add("blurred");
+            document.getElementById("input-container").classList.add("blurred");
+        }else {
+            document.getElementById("tutorial-overlay").classList.remove("active");
+            document.getElementById("cotpan").classList.remove("blurred");
+            document.getElementById("terminal").classList.remove("blurred");
+            document.getElementById("input-container").classList.remove("blurred");
+        }
+    }
+    window.onload = startTutorial;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         const networks = [
-            { bssid: '00:14:22:01:23:45', channel: 6, signal: -45, essid: 'MonReseau', clients: [
-                { mac: '11:00:14:22:01:23', ip: '192.168.1.10' },
-                { mac: '22:00:14:22:01:24', ip: '192.168.1.11' }
-            ]},
-            { bssid: '00:14:22:01:23:46', channel: 11, signal: -50, essid: 'AutreReseau', clients: [
-                { mac: '33:00:14:22:01:25', ip: '192.168.1.20' }
-            ]}
+            { bssid: '00:14:22:01:23:45', channel: 6, signal: -45, essid: 'PoubelWIFI', clients: [{ mac: '11:00:14:22:01:23', ip: '192.168.1.10' },{ mac: '22:00:14:22:01:24', ip: '192.168.1.11' }]},
+            { bssid: '00:44:22:01:23:46', channel: 11, signal: -50, essid: 'DFONSSC', clients: [{ mac: '33:00:14:22:01:25', ip: '192.168.1.20' }]},
+            { bssid: '33:23:34:01:23:60', channel: 6, signal: -65, essid: 'PATATEpomme-de_ter-ter', clients: [{ mac: '25:03:14:62:01:23', ip: '192.168.1.02' },{ mac: '32:00:14:22:56:42', ip: '192.168.1.17' }]}
         ];
 
         let isSudo = false;
@@ -271,16 +375,16 @@ pre {
                     isSudo = false;
                     printToTerminal("Mode superutilisateur désactivé.");
                 } else {
-                    printToTerminal("Fermeture du terminal.");
+                    printToTerminal("Sortie");
                 }
             }
             else if (cmd === "iwconfig") {
                 printToTerminal(isMonitorMode ? `${monitorInterface}  Mode: Monitor` : `${currentInterface}  Mode: Managed`);
             }
             else if (cmd === "ifconfig") {
-                printToTerminal(`${currentInterface}  Link encap:Ethernet  HWaddr 00:11:22:33:44:55\n          inet6 addr: fe80::21b:43ff:fe23:4d6/64 Scope:Link\n          UP`);
+                printToTerminal(`${currentInterface} flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500\ninet 10.188.194.185  netmask 255.255.0.0  broadcast 10.188.255.255\n          inet6 addr: fe80::21b:43ff:fe23:4d6/64 Scope:Link\n          UP`);
                 if (isMonitorMode) {
-                    printToTerminal(`${monitorInterface}  Link encap:Ethernet  HWaddr 00:11:22:33:44:56\n          inet6 addr: fe80::21b:43ff:fe23:4d7/64 Scope:Link\n          UP`);
+                    printToTerminal(`${monitorInterface}  flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500\ninet 10.188.194.185  netmask 255.255.0.0  broadcast 10.188.255.255\n         inet6 addr: fe80::21b:43ff:fe23:4d7/64 Scope:Link\n          UP`);
                 }
             }
             else if (cmd.startsWith("airmon-ng start wlan0")) {
@@ -313,13 +417,12 @@ pre {
     const match = cmd.match(/airodump-ng (\S+)\s+--channel (\d+)\s+--bssid ([\w:]+)/);
     
     if (!match) {
-        printToTerminal("Erreur: Commande mal formée. Assurez-vous d'utiliser airodump-ng <interface> --channel <numéro canal> --bssid <BSSID>");
+        printToTerminal("Erreur: Commande mal formée. Utiliser airodump-ng <interface> --channel <numéro canal> --bssid <BSSID>");
     } else {
-        const interfaceName = match[1]; // Exemple: wlan0mon
-        const channel = match[2]; // Exemple: 6
-        const bssid = match[3]; // Exemple: 00:14:22:01:23:45
+        const interfaceName = match[1]; 
+        const channel = match[2]; 
+        const bssid = match[3]; 
 
-        // Vérifier l'interface
         const isInterfaceValid = interfaceName === "wlan0mon" || interfaceName === "wlan1mon";
         
         if (!isInterfaceValid) {
@@ -327,7 +430,6 @@ pre {
             return;
         }
 
-        // Vérification du BSSID
         const network = networks.find(n => n.bssid === bssid);
         if (network) {
             printToTerminal(`Affichage des détails du réseau avec BSSID ${bssid} sur le canal ${channel}...`);
@@ -509,7 +611,7 @@ function showTutorialStep() {
 
     tutorialSteps.forEach((currentStep, tutorialIndex) => {
         const tooltipHtml = `
-            <div class="infobul" id="tutorial-step-${tutorialIndex}" onmousedown="startDrag(event, ${tutorialIndex})">
+            <div class="infobul" id="tutorial-step-${tutorialIndex}">
                 <h2>${currentStep.title}</h2>
                 
                 <!-- Affichage du texte avec gestion des lignes multiples -->
