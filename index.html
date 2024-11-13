@@ -9,7 +9,68 @@
     <button id="pannbtn" class="topanbtn" onclick="toPann()">☰</button>
     <div id="tutocont"></div>
 </div>
+
+<div id="rightPanel" class="right-panel">
+    <h2>Explications !</h2>
+
+    <h3>Le Mode SuperUtilisateur</h3>
+    <p>Si tu viens de Windows, MacOs, Android ou encore IOSc'est que tu n'as probablement jamais eu la sensation d'être maître de ton appareil ! Interagir avec les composant de ton ordinateur nécessite que tu es leur autorisation : et oui le consentement ! Ici Aircrack-NG a besoin de permissions pour fonctionner notamment pour manipuler la carte réseau. Donc, on commence par une commande qui lui donne ces droits, un peu comme un badge d'accès à un batiment ou des clés de voiture pour la démarrer. Sur les distributions linux, tu'utilises la commande  ^sudo^.</p>
+
+    <h3>Le Mode Moniteur</h3>
+    <p>La temps normal ta carte wifi écoute grossièrement que les données qu'elle recoit du réseau auquel est connecter ton appareil. Ce qu'on veut nous pour analyser le trafic réseau autour de toi c'est écouter tout les réseaux disponibles à proximité, donc on met la carte réseau en mode moniteur ! C'est comme papi à l'EPHAD qui respire h24 en bouteille d'oxygène et puis POUF il redecouvre l'air environnant ainsi que toutes  les odeurs de ses compagnons de vie !</p>
+
+    <h3>Scanner les Réseaux Wi-Fi</h3>
+    <p>Puis ensuite on veut connaître les réseaux wifi à proximité et leur scaractéristiques. Grace à un scan on  obtient une liste de tous les réseaux dans la zone en temps réél, tu pourras connaître son blaze ou encore si il est lent par exemple : pratique si tu veux mener une attaque ^que dis-je un pentest biensûr^ !</p>
+
+    <h3>Réseau Cible</h3>
+    <p>Tu dois ensuite choisir ta cible, on peut prendre un réseau en particulier. On peut le choisir dans la liste de réseaux scannés (donc écoutés par ta carte WIFI) pour qu'Aircrack-NG écoute ce réseau spécifiquement, on peut en analyser beaucoup de chose.</p>
+
+    <h3>Désauthentification</h3>
+    <p>Ce qu'on veut c'est récupérer des données pour analyser comment elles sont chiffrées ou bien trouver des vulnérabilité. Pour cela on peut désauthentifier un utilisateur du réseau cible pour que sa machine soit forcé de se reconnecter au réseau automatiquement et envoyer des paquets de données, ce que font les machine pour s'authentifier au près d'un réseau !  </p>
+
+    <h3>Capture de Paquets</h3>
+    <p>Aircrack-NG capture les paquets de données qui circulent. Les données peuvent être diverse, ce sont tout ce qui passe pour que les appareils puissent communiquer avec le réseau et donc échanger avec le routeur. Grace à ces données, on aura une chance de découvrir la clé de sécurité du réseau ou un mot depasse directement.</p>
+
+    <h3>Crack dela Clé de Sécurité</h3>
+    <p>Quand on a assez de paquets, Aircrack-NG peut tenter de trouver la clé de sécurité ou le mot de passe en clair du réseau. On utilise souvent un dictionnaire avec des millions de mot de passe pour qu'il teste rapidemnt par brute force. Si il trouve la clé alors on aura de quoi hacker le réseau, sinon il faudre recommencer ou bien utiliser d'autres nombreuses techniques de crack de clé.</p>
+</div>
+
+
+<button class="toggle-right-panel-btn" onclick="toggleRightPanel()">☰</button>
+
     <style>
+    
+    
+
+.right-panel {
+    position: fixed;
+    right: -300px; 
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #444;
+    color: white;
+    overflow-y: auto;
+    transition: right 0.3s ease; 
+    padding: 20px;
+    box-shadow: -5px 0 5px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+
+.toggle-right-panel-btn {
+    position: fixed;
+    right: 10px;
+    top: 20px;
+    background-color: #61952e;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1001;
+}
+
  .tutorial-overlay {
             position: fixed;
             top: 0;
@@ -296,7 +357,14 @@ pre {
     </div>
 
 
-    <script>
+  
+<script>
+function toggleRightPanel() {
+    const panel = document.getElementById("rightPanel");
+    const isOpen = panel.style.right === "0px";
+    panel.style.right = isOpen ? "-300px" : "0px";
+}
+
 
  let tutorialStep = 0;
 
