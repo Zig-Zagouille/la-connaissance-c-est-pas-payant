@@ -359,6 +359,8 @@ pre {
 
   
 <script>
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
+
 function toggleRightPanel() {
     const panel = document.getElementById("rightPanel");
     const isOpen = panel.style.right === "0px";
