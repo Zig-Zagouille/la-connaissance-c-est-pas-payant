@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<-bob’ or 1=1 --   ->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Injection SQL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .erreur {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .vrai {
+            color: green;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Connexion</h1>
+    <input type="text" id="username" placeholder="Nom d'utilisateur">
+    <input type="password" id="password" placeholder="Mot de passe">
+    <button onclick="connecte()">Se connecter</button>
+    <div id="message" class="erreur"></div>
+</div>
+
+<script>
+    const users = [
+        { username: 'admin', password: '1234' }
+    ];
+
+    function connecte() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const afficheresult = document.getElementById('message');
+
+        const sqlentre = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+
+        const result = simsqlinject(sqlentre);
+
+        if (result) {
+            afficheresult.textContent = 'Connection pour ' + username + '!';
+            afficheresult.className = 'vrai';
+        } else {
+            afficheresult.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
+            afficheresult.className = 'erreur';
+        }
+    }
+
+    function simsqlinject(sqlentre) {
+        
+        if (sqlentre.includes('1=1')) {
+            return true;
+        }
+        for (let user of users) {
+            const check = `SELECT * FROM users WHERE username = '${user.username}' AND password = '${user.password}'`;
+            if (check === sqlentre) {
+                return true;
+            }
+        }
+        return false; 
+    }
+</script>
+
+</body>
+</html>
